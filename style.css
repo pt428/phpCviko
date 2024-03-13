@@ -1,0 +1,12 @@
+body {
+  background-color: rgba(201, 201, 201, 0.875);
+}
+h1 {
+  color: rgba(14, 112, 239, 0.677);
+}
+.container {
+  width: 50rem;
+}
+label {
+  color:rgba(14, 112, 239, 0.677);
+}
