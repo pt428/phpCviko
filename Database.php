@@ -27,8 +27,6 @@ class Database{
 
     }
 
-      
-
     function addDataToDb($connection,$isbn,$first_name,$second_name,$book_name,$book_describe){
         $sql="INSERT 
                 INTO books(isbn,first_name,second_name,book_name,book_describe) 
@@ -56,21 +54,20 @@ class Database{
         }
     }
 
- 
-    
     function searchDataFromDb($connection,$isbn,$first_name,$second_name,$book_name){
-        $sql="SELECT * FROM books WHERE 
-        isbn=:isbn OR
-        first_name=:first_name OR
-        second_name=:second_name OR
-        book_name=:book_name";
-         
+        $sql="SELECT * FROM books WHERE"
+        . ($isbn?" isbn=:isbn AND":" 1=1 AND")
+        . ($first_name?" first_name=:first_name AND":" 1=1 AND")
+        . ($second_name?" second_name=:second_name AND":" 1=1 AND")
+        . ($book_name?" book_name=:book_name":" 1=1");
+
+       
         $stmt=$connection->prepare($sql);
         if($stmt){
-            $stmt->bindValue(":isbn",$isbn,PDO::PARAM_STR);
-            $stmt->bindValue(":first_name",$first_name,PDO::PARAM_STR);
-            $stmt->bindValue(":second_name",$second_name,PDO::PARAM_STR);
-            $stmt->bindValue(":book_name",$book_name,PDO::PARAM_STR);
+            if($isbn)$stmt->bindValue(":isbn",$isbn,PDO::PARAM_STR);
+            if($first_name)$stmt->bindValue(":first_name",$first_name,PDO::PARAM_STR);
+            if($second_name)$stmt->bindValue(":second_name",$second_name,PDO::PARAM_STR);
+            if($book_name)$stmt->bindValue(":book_name",$book_name,PDO::PARAM_STR);
          
         }else{
             echo mysqli_error($connection);
